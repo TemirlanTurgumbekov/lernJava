@@ -1,0 +1,41 @@
+package ru.alishev.springcourse.dao;
+
+import org.springframework.stereotype.Component;
+import ru.alishev.springcourse.models.Person;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+public class PersonDAO {
+    private List<Person> people;
+    private int PEOPLE_COUNT;
+
+    {
+        people  = new ArrayList<>();
+
+        people.add(new Person(++PEOPLE_COUNT, "Tom"));
+        people.add(new Person(++PEOPLE_COUNT, "Julian"));
+        people.add(new Person(++PEOPLE_COUNT, "Temirlan"));
+        people.add(new Person(++PEOPLE_COUNT, "Myrzayim"));
+    }
+
+    public List<Person> index() {
+        return people;
+    }
+
+    public Person show(int id) {
+        return people.stream().filter(person -> person.getId() == id).findAny().orElse(null);
+    }
+
+    public void save(Person person) {
+        person.setId(++PEOPLE_COUNT);
+        people.add(person);
+    }
+
+    public void update(int id, Person person) {
+        Person personToBeUpdated = show(id);
+
+        personToBeUpdated.setName(person.getName());
+    }
+}
